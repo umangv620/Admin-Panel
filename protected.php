@@ -1,9 +1,9 @@
 <?
 session_start();
-if($login_username=="") {
-Header("Location: login.html");
+if(isset($_SESSION['username'])) {
+Header("Location: index.php");
 } else {
 
-<!-- rest of your HTML code here for protected pages -->
+header("Location: login.html");
 }
 ?>
