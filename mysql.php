@@ -7,16 +7,13 @@
  
 class mysql {
     // Sets the necessary variables for the class
-    var $server = "localhost";
-    var $conn_username = "root";
-    var $conn_password = "GN9JB4fBsKf29RNw";
-    var $connection;
-    var $select;
-    var $query;
-    var $db;
+    public $connection;
+    public $select;
+    public $query;
+    public $result;
 
     function connect($db) {
-    $connection = mysql_connect($server,$conn_username,$conn_password);
+    $connection = mysql_connect("localhost","umangv_admin","my8523");
     $select = mysql_select_db($db,$connection);
     }
     /** 
@@ -31,7 +28,7 @@ class mysql {
             echo 'Could not run query: ' . mysql_error();
             exit;
         }
-        return $result;
+		return $result;
     }
     /**
      * To run a queury on the database
