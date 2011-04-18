@@ -64,8 +64,8 @@ while($row = mysql_fetch_array($result)){
 						<p>Welcome, <?php echo $firstname . " " .$lastname; ?>! <a href="#" title="1 new private message from Elaine!" class="tooltip">1 new message!</a></p>
 						<ul>
 							<li><a href="login.php?action=logout" title="End administrator session" class="tooltip"><span class="ui-icon ui-icon-power"></span>Logout</a></li>
-							<li><a href="index.php?module=settings" title="Change current settings" class="tooltip"><span class="ui-icon ui-icon-wrench"></span>Settings</a></li>
-							<li><a href="index.php?module=user" title="Go to your account" class="tooltip"><span class="ui-icon ui-icon-person"></span>My account</a></li>
+							<li><a href="#" title="Change current settings" class="tooltip"><span class="ui-icon ui-icon-wrench"></span>Settings</a></li>
+							<li><a href="#" title="Go to your account" class="tooltip"><span class="ui-icon ui-icon-person"></span>My account</a></li>
 						</ul>	
 					</div>
 					<!-- End of Meta information -->
@@ -111,7 +111,7 @@ while($row = mysql_fetch_array($result)){
 				
 				<!-- Search bar -->
 				<div id="search">
-					<form action="search.php" method="POST">
+					<form action="http://unithemes.net/search/" method="POST">
 						<p>
 							<input type="submit" value="" class="but" />
 							<input type="text" name="q" value="Search the admin panel" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;" />

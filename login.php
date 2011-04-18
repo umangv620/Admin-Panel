@@ -6,18 +6,21 @@
  */
  
 session_start();
-
+include "mysql.php";
+if(isset($_GET['error'])){
+	$error = '<div class="message error close" id="warning"><h2>Incorrect ' . $_GET['error'] . '</h2><p>Oops! Your ' . $_GET['error'] . ' is wrong. Please try again.</p></div>';
+}
 function login($user,$pass){
-	include "mysql.php";
 			$mysql = new mysql();
 			$mysql->connect("umangv_admin");
-			$q="SELECT * from login where username='" . $_POST['username'] . "' and password='" . $_POST['password'] ."'";
+			$q="SELECT * from login where username='" . $_POST['username'] . "' and password='" . md5($_POST['password']) ."'";
 			$result = $mysql->query($q);
 
-			if (mysql_num_rows($result) == 0){
-				$error = '<div class="message warning close" id="warning">Oops! Your login is wrong. Please click back and try again.</div>';
+			if (!$result || (mysql_numrows($result) < 1)){
+				Header("Location: login.php?error=login");
 			} else {
 				$_SESSION['username'] = $_POST['username'];
+				$_SESSION['password'] = md5($_POST['password']);
 				if(isset($_POST['remember'])){
 					 setcookie("cookname", $_POST['username'], time()+60*60*24*100, "/");
 					 setcookie("cookpass", $_POST['password'], time()+60*60*24*100, "/");
@@ -30,6 +33,10 @@ if(isset($_GET['action'])){
 	switch($_GET['action']){
 		case 'logout':
 			unset($_SESSION['username']);
+			if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
+			   setcookie("cookname", "", time()-60*60*24*100, "/");
+			   setcookie("cookpass", "", time()-60*60*24*100, "/");
+			}
 			Header("Location: login.php");
 		break;
 		case 'checkuser':
@@ -71,10 +78,7 @@ if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
 		</div>
 		<div id="box">
 			<?php
-			if(isset($error)){
-				echo $error;
-				unset($error);
-			}
+			echo $error;
 			?>
 			<form action="login.php?action=checkuser" method="POST">
 			<p class="main">

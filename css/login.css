@@ -85,3 +85,54 @@ span input {
  background:#444;
  color:#fff;
 }
+
+/*NOTIFICATION MESSAGES*/
+.message {
+	display:block;
+	padding:10px 20px;
+	margin-bottom:15px;
+}
+
+.message p {
+	width:auto;
+	margin-bottom:0;
+	margin-left:60px;
+}
+
+.message h2 {
+	margin-left:60px;
+	margin-bottom:5px;
+}
+
+.warning {
+	background:#feffc8 url('../assets/icons/warning_48.png') 20px 50% no-repeat;
+	border:1px solid #f1aa2d;
+} 
+
+.message p {
+	color:#555;
+}
+
+.message h2 {
+	color:#333;
+}
+
+.error {
+	background:#fdcea4 url('../assets/icons/stop_48.png') 20px 50% no-repeat;
+	border:1px solid #c44509;
+}
+
+.success {
+	background:#d4f684 url('../assets/icons/tick_48.png') 20px 50% no-repeat;
+	border:1px solid #739f1d;
+}
+
+.information {
+	background:#c3e4fd url('../assets/icons/info_48.png') 20px 50% no-repeat;
+	border:1px solid #688fdc;
+}
+
+.message:hover {
+	cursor:pointer;
+}
+/* end of notification messages */
