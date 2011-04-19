@@ -1,25 +1,5 @@
 <?php
-session_start();
-
-if(!isset($_SESSION['username'])) {
-Header("Location: login.php");
-}
-include 'mysql.php';
-$mysql = new mysql();
-$mysql->connect("umangv_admin");
-
-$q="SELECT * from login where username='" . $_SESSION['username'] . "' and password='" . $_SESSION['password'] ."'";
-$result = $mysql->query($q);
-			
-if (!$result || (mysql_numrows($result) < 1)){
-	Header("Location: login.php?action=logout");
-}
-while($row = mysql_fetch_array($result)){
-	$firstname = $row['firstname'];
-	$lastname = $row['lastname'];
-	$rank = $row['rank'];
-}
-			
+include 'auth.php';		
 ?>
 <!DOCTYPE html>
 <html>
@@ -830,7 +810,7 @@ while($row = mysql_fetch_array($result)){
 		</div>
 		<!-- End of Footer -->
 
-
+<?php include_once("analyticstracking.php") ?>
 	</body>
 </html>
 

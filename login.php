@@ -5,50 +5,34 @@
  * @copyright 2011
  */
  
-session_start();
-include "mysql.php";
-if(isset($_GET['error'])){
-	$error = '<div class="message error close" id="warning"><h2>Incorrect ' . $_GET['error'] . '</h2><p>Oops! Your ' . $_GET['error'] . ' is wrong. Please try again.</p></div>';
+include 'auth.php';
+if(isset($_SESSION['uvuser'])){
+	Header("Location: index.php");
 }
-function login($user,$pass){
-			$mysql = new mysql();
-			$mysql->connect("umangv_admin");
-			$q="SELECT * from login where username='" . $_POST['username'] . "' and password='" . md5($_POST['password']) ."'";
-			$result = $mysql->query($q);
-
-			if (!$result || (mysql_numrows($result) < 1)){
-				Header("Location: login.php?error=login");
-			} else {
-				$_SESSION['username'] = $_POST['username'];
-				$_SESSION['password'] = md5($_POST['password']);
-				if(isset($_POST['remember'])){
-					 setcookie("cookname", $_POST['username'], time()+60*60*24*100, "/");
-					 setcookie("cookpass", $_POST['password'], time()+60*60*24*100, "/");
-				}
-				Header("Location: index.php");
-			}
-}
-
 if(isset($_GET['action'])){
 	switch($_GET['action']){
 		case 'logout':
-			unset($_SESSION['username']);
-			if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
-			   setcookie("cookname", "", time()-60*60*24*100, "/");
-			   setcookie("cookpass", "", time()-60*60*24*100, "/");
-			}
-			Header("Location: login.php");
+			logout();
 		break;
-		case 'checkuser':
-			login($_POST['username'],$_POST['password']);
+		case 'error':
+			switch($_GET['error']){
+				case 'user':
+					$message = "Your username and/or password is wrong. Please try again.";
+				break;
+				case 'blank':
+					$message = "You left a field blank! Please try again.";
+				break;
+			}
+			$error = '<div class="message error close" id="warning"><h2>Oops!</h2><p>' . $message . '</p></div>';
+		break;
+		case 'login':
+			if(!$_POST['username'] || !$_POST['password']){
+				Header("Location: login.php?action=error&error=blank");
+			}else{
+				login($_POST['username'],$_POST['password']);
+			}
 		break;
 	}
-}
-if(isset($_SESSION['username'])) {
-	Header("Location: index.php");
-}
-if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
-	login($_COOKIE['cookname'], $_COOKIE['cookpass']);
 }
 ?>
 <!DOCTYPE html>
@@ -74,13 +58,13 @@ if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
 	<body>
 	<div id="container">
 		<div class="logo">
-			<a href="#"><img src="assets/logo.png" alt="" /></a>
+			<a href="login.php"><img src="assets/logo.png" alt="" /></a>
 		</div>
 		<div id="box">
 			<?php
 			echo $error;
 			?>
-			<form action="login.php?action=checkuser" method="POST">
+			<form action="login.php?action=login" method="POST">
 			<p class="main">
 				<label>Username: </label>
 				<input name="username" value="" /> 
@@ -95,6 +79,6 @@ if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
 			</form>
 		</div>
 	</div>
-
+<?php include_once("analyticstracking.php") ?>
 	</body>
 </html>
