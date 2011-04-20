@@ -16,5 +16,4 @@ if(!isset($_SESSION['uvuser'])) {
 	$firstname = $details['firstname'];
 	$lastname = $details['lastname'];
 	$rank = $details['rank'];	
-}	
-?>
+}

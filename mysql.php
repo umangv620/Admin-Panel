@@ -5,30 +5,23 @@
  * @copyright 2011
  */
  
+include_once 'config.php';
+
 class mysql {
     // Sets the necessary variables for the class
-    public $connection;
-    public $select;
-    public $query;
-    public $result;
-
-    function connect($db) {
-    $connection = mysql_connect("localhost","umangv_admin","my8523");
-    $select = mysql_select_db($db,$connection);
+    private $connection;
+    
+    public function __construct() {
+		$this->connection = mysql_connect(DB_SERVER,DB_USER,DB_PASS);
+		mysql_select_db(DB_NAME,$this->connection);
     }
     /** 
      * To run the MySQL Connection, you need to create a new instance of the class
-     * $mysql = new mysql(); //This creates a new instance
-     * $mysql->connect($db); //This connects to the database
+     * $mysql = new mysql(); //This creates a new instance and connects to the database in the config file
      */
      
     function query($query) {
-        $result = mysql_query($query);
-        if (!$result) {
-            echo 'Could not run query: ' . mysql_error();
-            exit;
-        }
-		return $result;
+        return mysql_query($query, $this->connection);
     }
     /**
      * To run a queury on the database
@@ -36,7 +29,7 @@ class mysql {
      */
      
     function end() {
-        mysql_free_result($connection);
+        mysql_free_result($this->connection);
     }
     /**
      * To close the MySQL connection 
